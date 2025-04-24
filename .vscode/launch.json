@@ -2,17 +2,21 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Debug STM32H563",
-        "cwd": "${workspaceFolder}",
-        "executable": "build/firmware.elf",
+        "name": "Debug NUCLEO-H563ZI (OpenOCD)",
+        "cwd": "${workspaceRoot}",
+        "executable": "${workspaceRoot}/build/firmware.elf",
         "request": "launch",
         "type": "cortex-debug",
-        "servertype": "stlink",
-        "device": "STM32H563ZITx",
+        "servertype": "openocd",
+        "device": "STM32H563ZI", // Adjust to STM32H563RGT6 if needed
         "interface": "swd",
-        "runToEntryPoint": "main",
-        "preLaunchTask": "build",
-        "svdFile": "STM32H563.svd"
+        "runToMain": true,
+        "configFiles": [
+          "interface/stlink.cfg",
+          "target/stm32h5x.cfg"
+        ],
+        "svdFile": "${workspaceRoot}/STM32H563.svd", // optional, for register view
+        "preLaunchTask": "build"
       }
     ]
   }
