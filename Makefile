@@ -16,7 +16,10 @@ BUILD_DIR  = build
 SRC_DIR    = src
 DUMMY_DIR  = $(SRC_DIR)/dummy
 SYSTEM_DIR = system
-INCLUDE_DIRS = -Iinclude -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include
+HAL_DIR = Drivers/STM32H5xx_HAL_Driver
+HAL_SRC = $(wildcard $(HAL_DIR)/Src/*.c)
+HAL_OBJS = $(patsubst $(HAL_DIR)/Src/%.c, $(BUILD_DIR)/%.o, $(HAL_SRC))
+INCLUDE_DIRS = -Iinclude -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include -I$(HAL_DIR)/Inc
 
 # Files
 LINKER_SCRIPT = linker/STM32H563ZITx_FLASH.ld
@@ -25,7 +28,8 @@ OBJS = \
 	$(BUILD_DIR)/main.o \
 	$(BUILD_DIR)/system_stm32h5xx.o \
 	$(STARTUP_OBJ) \
-	$(BUILD_DIR)/dummy_functions.o
+	$(BUILD_DIR)/dummy_functions.o \
+	$(HAL_OBJS)
 
 
 # Flags
@@ -52,6 +56,9 @@ $(BUILD_DIR)/main.o: $(SRC_DIR)/main.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/system_stm32h5xx.o: $(SYSTEM_DIR)/system_stm32h5xx.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(HAL_DIR)/Src/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(STARTUP_OBJ): $(SRC_DIR)/startup_stm32h563xx.s | $(BUILD_DIR)

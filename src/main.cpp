@@ -1,5 +1,4 @@
 #include "stm32h563xx.h"
-#include <stdint.h>
 
 void delay_ms(uint32_t ms) {
     // Basic busy-wait loop, assuming 64 MHz clock (adjust for your system clock)
