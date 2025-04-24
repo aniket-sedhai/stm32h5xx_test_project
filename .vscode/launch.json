@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug STM32H563",
+        "cwd": "${workspaceFolder}",
+        "executable": "build/firmware.elf",
+        "request": "launch",
+        "type": "cortex-debug",
+        "servertype": "stlink",
+        "device": "STM32H563ZITx",
+        "interface": "swd",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "build",
+        "svdFile": "STM32H563.svd"
+      }
+    ]
+  }
