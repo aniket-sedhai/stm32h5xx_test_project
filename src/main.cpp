@@ -1,4 +1,5 @@
 #include "stm32h563xx.h"
+#include "stm32h5xx_hal.h"
 
 void delay_ms(uint32_t ms) {
     // Basic busy-wait loop, assuming 64 MHz clock (adjust for your system clock)
@@ -6,22 +7,31 @@ void delay_ms(uint32_t ms) {
     for (volatile uint32_t i = 0; i < (64000 * ms); ++i);
 }
 
+static void MX_GPIO_Init(void)
+{
+    __HAL_RCC_GPIOF_CLK_ENABLE();
+
+    /*Configure GPIO pin Output Level */
+    HAL_GPIO_WritePin(GPIOF, GPIO_PIN_4, GPIO_PIN_RESET);
+
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+        /*Configure GPIO pin : PB0 */
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+}
+
 int main() {
-    // Enable clock for GPIOB
-    RCC->AHB4ENR |= RCC_AHB2ENR_GPIOBEN;
 
-    // Set PB0 as general-purpose output (01)
-    GPIOB->MODER &= ~(0b11 << (0 * 2));  // Clear mode bits
-    GPIOB->MODER |=  (0b01 << (0 * 2));  // Set to output mode
+    MX_GPIO_Init();
 
-    // Optional: Set output type to push-pull (default)
-    GPIOB->OTYPER &= ~(1 << 0);
-
-    // Optional: Set no pull-up/pull-down
-    GPIOB->PUPDR &= ~(0b11 << (0 * 2));
-
-    while (1) {
-        GPIOB->ODR ^= (1 << 0); // Toggle PB0
-        delay_ms(500);
+    while (1)
+    {
+        /* USER CODE END WHILE */
+        HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_4);
+        HAL_Delay(500);
     }
+    
 }
