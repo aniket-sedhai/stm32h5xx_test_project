@@ -1,0 +1,3 @@
+[submodule "src/FreeRTOS-Kernel"]
+	path = src/FreeRTOS-Kernel
+	url = https://software_and_firmware-admin@bitbucket.org/software_and_firmware/freertos-kernel.git
