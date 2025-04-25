@@ -18,7 +18,7 @@ DUMMY_DIR  = $(SRC_DIR)/dummy
 SYSTEM_DIR = system
 HAL_DIR = Drivers/STM32H5xx_HAL_Driver
 HAL_SRC = $(wildcard $(HAL_DIR)/Src/*.c)
-HAL_OBJS = $(patsubst $(HAL_DIR)/Src/%.c, $(BUILD_DIR)/%.o, $(HAL_SRC))
+HAL_OBJS = $(foreach f,$(notdir $(HAL_SRC)),$(BUILD_DIR)/$(f:.c=.o))
 INCLUDE_DIRS = -Iinclude -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include -I$(HAL_DIR)/Inc
 
 # Files
@@ -58,7 +58,38 @@ $(BUILD_DIR)/main.o: $(SRC_DIR)/main.cpp | $(BUILD_DIR)
 $(BUILD_DIR)/system_stm32h5xx.o: $(SYSTEM_DIR)/system_stm32h5xx.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+
+# FreeRTOS objects
+FREERTOS_DIR = Middlewares/Third_Party/FreeRTOS/Source
+FREERTOS_OBJS = \
+    $(BUILD_DIR)/list.o \
+    $(BUILD_DIR)/queue.o \
+    $(BUILD_DIR)/tasks.o \
+    $(BUILD_DIR)/timers.o \
+    $(BUILD_DIR)/heap_4.o \
+    $(BUILD_DIR)/port.o
+
+# HAL object files (flattened)
 $(BUILD_DIR)/%.o: $(HAL_DIR)/Src/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# FreeRTOS source files (explicit rules, flattened)
+$(BUILD_DIR)/list.o: $(FREERTOS_DIR)/list.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/queue.o: $(FREERTOS_DIR)/queue.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/tasks.o: $(FREERTOS_DIR)/tasks.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/timers.o: $(FREERTOS_DIR)/timers.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/heap_4.o: $(FREERTOS_DIR)/portable/MemMang/heap_4.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/port.o: $(FREERTOS_DIR)/portable/GCC/ARM_CM33_NTZ/port.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(STARTUP_OBJ): $(SRC_DIR)/startup_stm32h563xx.s | $(BUILD_DIR)

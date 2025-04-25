@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stm32h5xx.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "portmacro.h": "c"
     }
 }
