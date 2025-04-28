@@ -1,10 +1,10 @@
 # Toolchain
-CC      = arm-none-eabi-gcc
-CXX     = arm-none-eabi-g++
-AS      = arm-none-eabi-as
-LD      = arm-none-eabi-g++
-OBJCOPY = arm-none-eabi-objcopy
-SIZE    = arm-none-eabi-size
+CC      = /Applications/ARM-GCC/gcc-arm-none-eabi/bin/arm-none-eabi-gcc
+CXX     = /Applications/ARM-GCC/gcc-arm-none-eabi/bin/arm-none-eabi-g++
+AS      = /Applications/ARM-GCC/gcc-arm-none-eabi/bin/arm-none-eabi-as
+LD      = /Applications/ARM-GCC/gcc-arm-none-eabi/bin/arm-none-eabi-g++
+OBJCOPY = /Applications/ARM-GCC/gcc-arm-none-eabi/bin/arm-none-eabi-objcopy
+SIZE    = /Applications/ARM-GCC/gcc-arm-none-eabi/bin/arm-none-eabi-size
 
 # MCU flags
 MCU       = cortex-m33
@@ -19,7 +19,7 @@ SYSTEM_DIR = system
 HAL_DIR = Drivers/STM32H5xx_HAL_Driver
 HAL_SRC = $(wildcard $(HAL_DIR)/Src/*.c)
 HAL_OBJS = $(foreach f,$(notdir $(HAL_SRC)),$(BUILD_DIR)/$(f:.c=.o))
-INCLUDE_DIRS = -Iinclude -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include -I$(HAL_DIR)/Inc
+INCLUDE_DIRS = -Iinclude -I/Applications/ARM-GCC/gcc-arm-none-eabi/arm-none-eabi/include -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include -I$(HAL_DIR)/Inc
 
 # Files
 LINKER_SCRIPT = linker/STM32H563ZITx_FLASH.ld
