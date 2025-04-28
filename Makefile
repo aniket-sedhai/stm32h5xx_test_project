@@ -19,7 +19,7 @@ SYSTEM_DIR = system
 HAL_DIR = Drivers/STM32H5xx_HAL_Driver
 HAL_SRC = $(wildcard $(HAL_DIR)/Src/*.c)
 HAL_OBJS = $(foreach f,$(notdir $(HAL_SRC)),$(BUILD_DIR)/$(f:.c=.o))
-INCLUDE_DIRS = -Iinclude -I/Applications/ARM-GCC/gcc-arm-none-eabi/arm-none-eabi/include -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include -I$(HAL_DIR)/Inc
+INCLUDE_DIRS = -Iinclude -Isrc/FreeRTOS-Kernel/include -Isrc/FreeRTOS-Kernel/portable/GCC/ARM_CM33_NTZ/non_secure -I/Applications/ARM-GCC/gcc-arm-none-eabi/arm-none-eabi/include -I$(SYSTEM_DIR) -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32H5xx/Include -I$(HAL_DIR)/Inc
 
 # Files
 LINKER_SCRIPT = linker/STM32H563ZITx_FLASH.ld

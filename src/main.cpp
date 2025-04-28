@@ -1,5 +1,6 @@
 #include "stm32h563xx.h"
 #include "stm32h5xx_hal.h"
+#include "FreeRTOS.h"
 
 static void MX_GPIO_Init(void)
 {
